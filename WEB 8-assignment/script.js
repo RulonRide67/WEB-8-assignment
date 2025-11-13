@@ -27,12 +27,6 @@ $(document).ready(function() {
         $(this).closest(".room-card").find(".room-desc").slideToggle();
     });
     
-    $(".bookBtn").click(function() {
-        $(this).text("Booked!").css({
-            backgroundColor: "#198754",
-            borderColor: "#198754"
-        });
-    });
     console.log("jQuery filter ready");
   $(".room-card").show();
 
@@ -64,3 +58,65 @@ $(document).ready(function() {
   });
 });
 
+$(document).ready(function() {
+  $(".view-details").click(function() {
+    const cardBody = $(this).closest(".card-body");
+    let details = cardBody.find(".extra-details");
+
+    if (details.length === 0) {
+      const desc = $(this).data("desc");
+      const title = $(this).data("title");
+
+      const longDesc = `
+        ${desc} This room offers premium comfort and modern amenities, including free Wi-Fi, air conditioning, and a private bathroom. 
+        Guests can also enjoy 24-hour room service and complimentary access to the hotel's fitness center. 
+        Perfect choice for travelers looking for both relaxation and convenience.
+      `;
+
+      const extraHTML = `
+        <div class="extra-details mt-3 border-top pt-3" style="display:none;">
+          <p class="small">${longDesc}</p>
+        </div>
+      `;
+
+      cardBody.append(extraHTML);
+      details = cardBody.find(".extra-details");
+    }
+
+    if (details.is(":visible")) {
+      details.slideUp(300);
+      $(this).text("Details");
+    } else {
+      details.slideDown(300);
+      $(this).text("Hide");
+    }
+  });
+});
+
+$(document).ready(function() {
+  $("#contactForm").on("submit", function(e) {
+    e.preventDefault(); 
+
+    if (this.checkValidity()) {
+      $("#formSuccess").fadeIn(400).delay(3000).fadeOut(400);
+      $(this).trigger("reset"); 
+      this.classList.remove("was-validated"); 
+    } else {
+      this.classList.add("was-validated"); 
+    }
+  });
+});
+
+$(document).ready(function() {
+  $("#bookingForm").on("submit", function(e) {
+    e.preventDefault();
+
+    if (this.checkValidity()) {
+      $("#bookingResult").fadeIn(400).delay(3000).fadeOut(400);
+      $(this).trigger("reset");
+      this.classList.remove("was-validated");
+    } else {
+      this.classList.add("was-validated");
+    }
+  });
+});
